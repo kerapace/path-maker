@@ -12,20 +12,25 @@
       <div class="viewbox">
         <canvas id="map-canvas" width="800px" height="600px"></canvas>
         <nav class="button-bar">
-          <button data-tool="move">Move</button>
-          <button data-tool="line">Draw Line</button>
-          <button data-tool="arc">Draw Arc</button> 
-          <button data-tool="freehand">Draw Freehand Curve</button>
-          <!-- <div class="snap-options-dropdown">
+          <button class="draw-button" data-tool="move">Move</button>
+          <button class="draw-button" data-tool="line">Draw Line</button>
+          <button class="draw-button" data-tool="arc">Draw Arc</button> 
+          <button class="draw-button" data-tool="freehand">Draw Freehand Curve</button>
+          <div class="snap-options-dropdown">
             <p>Snap to Grid</p>
               <ul>
-                <li value="20">Full square</li>
-                <li value="10">Half square</li>
-                <li value="1">None</li>
+                <li data-stg="20">Full square</li>
+                <li data-stg="10">Half square</li>
+                <li data-stg="false">None</li>
               </ul>
-          </div> -->
-          </span>
+          </div>
+          <button class="infobox">?</button>
         </nav>
+        <div class="modal-background">
+          <aside>
+            This is a simple graph paper app. Feel free to draw whatever you like.
+          </aside>
+        </div>
       </div>
     </section>
   </body>

@@ -58,6 +58,7 @@ ol, ul {
   border: 1px solid rgb(118,118,118);
   background-color: rgb(239,239,239);
   border-radius: 2px;
+  margin-right: 5px;
 }
 
 div.snap-options-dropdown:hover > ul {
@@ -65,9 +66,53 @@ div.snap-options-dropdown:hover > ul {
   flex-direction: column;
 }
 
+div.snap-options-dropdown > ul > li {
+  padding: 1px 6px;
+}
+
+div.snap-options-dropdown > ul > li:hover {
+  background-color: rgb(211,211,211);
+  cursor: pointer;
+}
+
 .snap-options-dropdown > ul {
   position: absolute;
-  top: 1em;
+  top: 1.5em;
   left: 0;
   display: none;
+  border: 1px solid rgb(118,118,118);
+  background-color: rgb(239,239,239);
+  border-radius: 2px;
+}
+
+
+div.modal-background.visible {
+  display: flex;
+}
+
+.modal-background {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(50,54,58,0.3);
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+}
+
+.modal-background > aside {
+  padding: 20px;
+  background-color: grey;
+  font-family: 'Lato';
+}
+
+canvas.blurred {
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
 }

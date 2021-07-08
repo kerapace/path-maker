@@ -1,14 +1,36 @@
 const GridAPI = require("./grid.js");
 const {Line, Arc, Freehand} = require("./shapes.js");
-
 const canvas = document.getElementById("map-canvas");
 const ctx = canvas.getContext('2d');
-
-
 const gridAPI = new GridAPI(canvas);
-const buttons = document.querySelectorAll(":scope .viewbox button");
+const buttons = document.querySelectorAll(".draw-button");
 buttons.forEach(button => button.addEventListener("click",(e) => {gridAPI.tool = e.target.dataset.tool}));
 gridAPI.drawGrid();
+
+const modalButton = document.querySelector(".infobox");
+const modalBackground = document.querySelector(".modal-background");
+const snapToGridOptions = document.querySelector(".snap-options-dropdown")
+
+snapToGridOptions.addEventListener("click", (e) => {
+    const stg = e.target.dataset.stg;
+    if(stg === "false") {
+      gridAPI.isSnappedToGrid = false;
+    }
+    else {
+      gridAPI.isSnappedToGrid = true;
+      gridAPI.snapToGrid = stg;
+    }
+  }
+);
+
+[modalButton,modalBackground].forEach(el => 
+  el.addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      modalBackground.classList.toggle("visible");
+      canvas.classList.toggle("blurred");
+    }
+  })
+);
 
 canvas.addEventListener("mousedown", (e) => {
   switch(gridAPI.tool) {
@@ -59,11 +81,14 @@ canvas.addEventListener("click", (e) => {
         gridAPI.currShape = new Arc(gridAPI.position.x,gridAPI.position.y);
         gridAPI.active = true;
       }
-  }
+    }
 });
 
 document.addEventListener("mousemove", (e) => {
-  if(!gridAPI.active) {return;}
+  if(!gridAPI.active) {
+    gridAPI.updateHoverPosition(e);
+    return;
+  }
   switch(gridAPI.tool) {
     case "move":
       gridAPI.moveView(gridAPI.position.x-gridAPI.grid.xOffset-e.offsetX,gridAPI.position.y-gridAPI.grid.yOffset-e.offsetY);
@@ -71,7 +96,7 @@ document.addEventListener("mousemove", (e) => {
       break;
     case "freehand":
       gridAPI.updatePosition(e);
-      if (e.target === canvas ) {gridAPI.currShape.points.push([gridAPI.position.x,gridAPI.position.y]);}
+      if (e.target === canvas) {gridAPI.currShape.points.push([gridAPI.position.x,gridAPI.position.y]);}
       break;
     case "arc":
     case "line":
@@ -93,6 +118,7 @@ canvas.addEventListener("mouseup", (e) => {
       gridAPI.updatePosition(e);
       gridAPI.currShape.points.push([gridAPI.position.x,gridAPI.position.y]);
       gridAPI.completeShape();
+      gridAPI.active = false;
   }
 });
 
@@ -101,6 +127,7 @@ canvas.addEventListener("mouseleave",(e) => {
 });
 
 canvas.addEventListener("mouseenter",(e) => {
+  if(!gridAPI.active) {return;}
   switch(gridAPI.tool) {
     case "freehand":
       gridAPI.updatePosition(e);

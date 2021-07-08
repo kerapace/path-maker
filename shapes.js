@@ -13,7 +13,7 @@ class Arc {
   }
 
   draw(ctx,grid,pos) {
-    const rad = this.rad || Math.sqrt((pos.x-this.x)**2 + (pos.y-this.y)**2);
+    const rad = this.rad === undefined ? Math.sqrt((pos.x-this.x)**2 + (pos.y-this.y)**2) : this.rad;
     const startAngle = this.startAngle === undefined ? Math.atan2(pos.y-this.y,pos.x-this.x) : this.startAngle;
     const endAngle = this.endAngle !== undefined ? 
       this.endAngle :
@@ -21,7 +21,7 @@ class Arc {
       startAngle + (2 * Math.PI) :
       (Math.atan2(pos.y-this.y,pos.x-this.x) - startAngle) % (2 * Math.PI) + startAngle;
     ctx.beginPath();
-    ctx.arc(this.x-grid.xOffset,this.y-grid.yOffset,rad,startAngle,endAngle);
+    rad === 0 ? ctx.fillRect(this.x-grid.xOffset,this.y-grid.yOffset,1,1) : ctx.arc(this.x-grid.xOffset,this.y-grid.yOffset,rad,startAngle,endAngle);
     ctx.stroke();
   }
 }

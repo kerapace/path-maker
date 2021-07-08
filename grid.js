@@ -19,7 +19,7 @@ function createBounds(grid) {
     xMin: 0,
     yMin: 0,
     xMax: grid.cellSize * grid.width - grid.canvas.width,
-    yMax: grid.cellsize * grid.height - grid.canvas.height,
+    yMax: grid.cellSize * grid.height - grid.canvas.height,
   };
 }
 
@@ -43,6 +43,7 @@ class GridAPI {
     this.ctx = canvas.getContext('2d');
     this.shapes = [];
     this.position = {x: null, y: null};
+    this.hoverPosition = {x: null, y: null};
     this.active = false;
     this.tool = "move";
     this.currShape = null;
@@ -54,10 +55,10 @@ class GridAPI {
       this.ctx.strokeStyle = "#000000";
       this.shapes.forEach(shape => shape.draw(this.ctx,this.grid));
       if(this.currShape !== null) {this.currShape.draw(this.ctx,this.grid,this.position);}
-      if(this.isSnappedToGrid) {
+      if(this.isSnappedToGrid && (this.tool === "arc" || this.tool === "line") && !this.active) {
         this.ctx.fillStyle = "#fcad03";
         this.ctx.beginPath();
-        this.ctx.arc(this.position.x-this.grid.xOffset,this.position.y-this.grid.yOffset,2,0,2*Math.PI);
+        this.ctx.arc(this.hoverPosition.x-this.grid.xOffset,this.hoverPosition.y-this.grid.yOffset,2,0,2*Math.PI);
         this.ctx.fill();
       }
     },30);
@@ -96,10 +97,20 @@ class GridAPI {
   }
 
   updatePosition(e) {
+    console.log(this.isSnappedToGrid);
     if(this.isSnappedToGrid === false || this.tool === "freehand" || this.tool === "move") {
       this.position = {x: this.grid.xOffset+e.offsetX, y: this.grid.yOffset+e.offsetY};
     } else {
       this.position = {
+        x: this.snapToGrid*Math.round((this.grid.xOffset+e.offsetX)/this.snapToGrid),
+        y: this.snapToGrid*Math.round((this.grid.yOffset+e.offsetY)/this.snapToGrid),
+      }
+    }
+  }
+
+  updateHoverPosition(e) {
+    if(this.isSnappedToGrid) {
+      this.hoverPosition = {
         x: this.snapToGrid*Math.round((this.grid.xOffset+e.offsetX)/this.snapToGrid),
         y: this.snapToGrid*Math.round((this.grid.yOffset+e.offsetY)/this.snapToGrid),
       }
