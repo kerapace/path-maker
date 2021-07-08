@@ -42,6 +42,7 @@ class GridAPI {
     this.grid = defineGrid(canvas);
     this.ctx = canvas.getContext('2d');
     this.shapes = [];
+    this.undoneShapes = [];
     this.position = {x: null, y: null};
     this.hoverPosition = {x: null, y: null};
     this.active = false;
@@ -124,15 +125,32 @@ class GridAPI {
   }
 
   undoShape() {
-
+    if(this.shapes.length === 0) {return;}
+    const shape = this.shapes.pop();
+    this.undoneShapes.push(shape);
+    this.storage.setItem("shapes",this.serializeShapes());
   }
 
   redoShape() {
-    
+    if(this.undoneShapes.length === 0) {return;}
+    const shape = this.undoneShapes.pop();
+    this.shapes.push(shape);
+    this.storage.setItem("shapes",this.serializeShapes());
+  }
+
+  resetShapes() {
+    this.shapes = [];
+    this.undoneShapes = [];
+    this.currShape = null;
+    this.active = false;
+    this.grid.xOffset = grid.width*grid.cellSize/2;
+    this.grid.yOffset = grid.height*grid.cellSize/2;
+    this.storage.setItem("shapes",this.serializeShapes());
   }
 
   completeShape() {
     this.shapes.push(this.currShape);
+    this.undoneShapes = [];
     this.currShape = null;
     this.active = false;
     this.storage.setItem("shapes",this.serializeShapes());

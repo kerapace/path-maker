@@ -1,7 +1,6 @@
 const GridAPI = require("./grid.js");
 const {Line, Arc, Freehand} = require("./shapes.js");
 const canvas = document.getElementById("map-canvas");
-const ctx = canvas.getContext('2d');
 const storage = window.localStorage;
 const gridAPI = new GridAPI(canvas,storage);
 const buttons = document.querySelectorAll(".draw-button");
@@ -15,7 +14,10 @@ if (shapes) {
 const viewBox = document.querySelector(".viewbox");
 const modalButton = document.querySelector(".infobox");
 const modalBackground = document.querySelector(".modal-background");
-const snapToGridOptions = document.querySelector(".snap-options-dropdown")
+const snapToGridOptions = document.querySelector(".snap-options-dropdown");
+const undoButton = document.querySelector(".undo-button");
+const redoButton = document.querySelector(".redo-button");
+const resetButton = document.querySelector(".reset-button");
 
 snapToGridOptions.addEventListener("click", (e) => {
     const stg = e.target.dataset.stg;
@@ -37,6 +39,10 @@ snapToGridOptions.addEventListener("click", (e) => {
     }
   })
 );
+
+undoButton.addEventListener("click", (e) => gridAPI.undoShape());
+redoButton.addEventListener("click", (e) => gridAPI.redoShape());
+resetButton.addEventListener("click", (e) => gridAPI.resetShapes());
 
 canvas.addEventListener("mousedown", (e) => {
   switch(gridAPI.tool) {
