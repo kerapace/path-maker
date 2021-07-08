@@ -2,11 +2,17 @@ const GridAPI = require("./grid.js");
 const {Line, Arc, Freehand} = require("./shapes.js");
 const canvas = document.getElementById("map-canvas");
 const ctx = canvas.getContext('2d');
-const gridAPI = new GridAPI(canvas);
+const storage = window.localStorage;
+const gridAPI = new GridAPI(canvas,storage);
 const buttons = document.querySelectorAll(".draw-button");
 buttons.forEach(button => button.addEventListener("click",(e) => {gridAPI.tool = e.target.dataset.tool}));
 gridAPI.drawGrid();
+let shapes = storage.getItem("shapes");
+if (shapes) {
+  gridAPI.loadShapesFromJSON(shapes);
+}
 
+const viewBox = document.querySelector(".viewbox");
 const modalButton = document.querySelector(".infobox");
 const modalBackground = document.querySelector(".modal-background");
 const snapToGridOptions = document.querySelector(".snap-options-dropdown")
@@ -27,7 +33,7 @@ snapToGridOptions.addEventListener("click", (e) => {
   el.addEventListener("click", (e) => {
     if (e.target === e.currentTarget) {
       modalBackground.classList.toggle("visible");
-      canvas.classList.toggle("blurred");
+      viewBox.classList.toggle("blurred");
     }
   })
 );

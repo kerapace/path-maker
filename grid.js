@@ -38,7 +38,7 @@ function defineGrid(canvas) {
 
 
 class GridAPI {
-  constructor(canvas) {
+  constructor(canvas,storage) {
     this.grid = defineGrid(canvas);
     this.ctx = canvas.getContext('2d');
     this.shapes = [];
@@ -49,6 +49,7 @@ class GridAPI {
     this.currShape = null;
     this.snapToGrid = 20;
     this.isSnappedToGrid = true;
+    this.storage = storage;
     setInterval(() => {
       this.ctx.clearRect(0,0,canvas.width,canvas.height);
       this.drawGrid();
@@ -122,10 +123,42 @@ class GridAPI {
     this.active = false;
   }
 
+  undoShape() {
+
+  }
+
+  redoShape() {
+    
+  }
+
   completeShape() {
     this.shapes.push(this.currShape);
     this.currShape = null;
     this.active = false;
+    this.storage.setItem("shapes",this.serializeShapes());
+  }
+
+  serializeShapes() {
+    return JSON.stringify({shapes: this.shapes.map(shape => Object.assign(shape,{class: shape.constructor.name}))});
+  }
+
+  loadShapesFromJSON(json) {
+    this.shapes = JSON.parse(json).shapes.map(shapeData => {
+      let ShapeType = Object;
+      switch (shapeData.class) {
+        case "Line":
+          ShapeType = Line;
+          break;
+        case "Arc":
+          ShapeType = Arc;
+          break;
+        case "Freehand":
+          ShapeType = Freehand;
+          break;
+      }
+      delete shapeData.class;
+      return Object.assign(new ShapeType,shapeData);
+    });
   }
 }
 
