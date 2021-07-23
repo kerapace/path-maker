@@ -99,7 +99,6 @@ class GridAPI {
   }
 
   updatePosition(e) {
-    console.log(this.isSnappedToGrid);
     if(this.isSnappedToGrid === false || this.tool === "freehand" || this.tool === "move") {
       this.position = {x: this.grid.xOffset+e.offsetX, y: this.grid.yOffset+e.offsetY};
     } else {
@@ -128,14 +127,14 @@ class GridAPI {
     if(this.shapes.length === 0) {return;}
     const shape = this.shapes.pop();
     this.undoneShapes.push(shape);
-    this.storage.setItem("shapes",this.serializeShapes());
+    this.updateSave();
   }
 
   redoShape() {
     if(this.undoneShapes.length === 0) {return;}
     const shape = this.undoneShapes.pop();
     this.shapes.push(shape);
-    this.storage.setItem("shapes",this.serializeShapes());
+    this.updateSave();
   }
 
   resetShapes() {
@@ -145,7 +144,7 @@ class GridAPI {
     this.active = false;
     this.grid.xOffset = grid.width*grid.cellSize/2;
     this.grid.yOffset = grid.height*grid.cellSize/2;
-    this.storage.setItem("shapes",this.serializeShapes());
+    this.updateSave();
   }
 
   completeShape() {
@@ -153,7 +152,13 @@ class GridAPI {
     this.undoneShapes = [];
     this.currShape = null;
     this.active = false;
+    this.updateSave();
+  }
+
+  updateSave() {
     this.storage.setItem("shapes",this.serializeShapes());
+    URL.revokeObjectURL(this.objectURL.current);
+    this.objectURL.current = URL.createObjectURL(this.storage.getItem("shapes"));
   }
 
   serializeShapes() {

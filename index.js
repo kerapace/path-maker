@@ -1,8 +1,21 @@
 const GridAPI = require("./grid.js");
 const {Line, Arc, Freehand} = require("./shapes.js");
 const canvas = document.getElementById("map-canvas");
+const downloadLink = document.querySelector(".download-link");
 const storage = window.localStorage;
-const gridAPI = new GridAPI(canvas,storage);
+const storageProxy = new Proxy(storage, {
+  setItem: (target, key, shapes) => {
+    if(key === "shapes") {
+      const json = [shapes];
+      const blob = new Blob(json, {type: 'text/plain;charset=utf-8'});
+      const oldObjectURL = downloadLink.href;
+      downloadLink.href = URL.createObjectURL(blob);
+      URL.revokeObjectURL(oldObjectURL);
+    }
+    return Reflect.setItem(...arguments);
+  },
+});
+const gridAPI = new GridAPI(canvas,storageProxy);
 const buttons = document.querySelectorAll(".draw-button");
 buttons.forEach(button => button.addEventListener("click",(e) => {gridAPI.tool = e.target.dataset.tool}));
 gridAPI.drawGrid();
@@ -10,6 +23,11 @@ let shapes = storage.getItem("shapes");
 if (shapes) {
   gridAPI.loadShapesFromJSON(shapes);
 }
+const initialJSON = [shapes];
+const initialBlob = new Blob(initialJSON, {type: 'text/plain;charset=utf-8'});
+downloadLink.href = URL.createObjectURL(initialBlob);
+
+
 
 const viewBox = document.querySelector(".viewbox");
 const modalButton = document.querySelector(".infobox");
@@ -18,6 +36,7 @@ const snapToGridOptions = document.querySelector(".snap-options-dropdown");
 const undoButton = document.querySelector(".undo-button");
 const redoButton = document.querySelector(".redo-button");
 const resetButton = document.querySelector(".reset-button");
+
 
 snapToGridOptions.addEventListener("click", (e) => {
     const stg = e.target.dataset.stg;

@@ -4,11 +4,13 @@
     <title>Path-Maker</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
     <script src="bundle.js" defer></script>
   </head>
   <body>
     <section class="main-display">
+      <h1>Path-Maker</h1>
       <div class="viewbox">
         <canvas id="map-canvas" width="800px" height="600px"></canvas>
         <nav class="button-bar">
@@ -27,12 +29,15 @@
                 <li data-stg="false">None</li>
               </ul>
           </div>
-          <button class="infobox">?</button>  
+          <button class="infobox">?</button>
+          <a class="download-link" href="" download="map.json"><button>Download</button></a>
         </nav>
       </div>
       <div class="modal-background">
         <aside>
-          This is a simple graph paper app. Feel free to draw whatever you like.
+          This is a simple graph paper app. You can draw multiple kinds of shapes, choose to undo and redo your drawings, and even export and import your
+          drawing as a JSON file. I created this app because I was playing in an OD&D campaign where the party was required to map everything
+          and none of the apps I found were nearly spacious enough and had the features I wanted.
         </aside>
       </div>
     </section>
