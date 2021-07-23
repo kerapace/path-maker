@@ -30,12 +30,13 @@ downloadLink.href = URL.createObjectURL(initialBlob);
 const importJSON = document.getElementById("import-json");
 
 importJSON.addEventListener("change", (e) => {
+  const prevShapes = gridAPI.shapes;
   const file = e.target.files[0];
   const reader = new FileReader();
   reader.readAsText(file);
   reader.onload = () => {
-    gridAPI.loadShapesFromJSON(reader.result);
-    gridAPI.updateSave();
+    try {gridAPI.loadShapesFromJSON(reader.result);}
+    catch (e) {gridAPI.shapes = prevShapes;}
   }
   reader.onerror = () => {
     window.alert(reader.error);

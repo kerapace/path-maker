@@ -176,6 +176,8 @@ class GridAPI {
         case "Freehand":
           ShapeType = Freehand;
           break;
+        default:
+          throw new Error('Invalid JSON');
       }
       delete shapeData.class;
       return Object.assign(new ShapeType,shapeData);
