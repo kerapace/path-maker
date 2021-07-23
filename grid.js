@@ -156,9 +156,7 @@ class GridAPI {
   }
 
   updateSave() {
-    this.storage.setItem("shapes",this.serializeShapes());
-    URL.revokeObjectURL(this.objectURL.current);
-    this.objectURL.current = URL.createObjectURL(this.storage.getItem("shapes"));
+    this.storage.setItem.bind(window.localStorage,"shapes",this.serializeShapes())();
   }
 
   serializeShapes() {

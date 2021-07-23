@@ -27,6 +27,21 @@ const initialJSON = [shapes];
 const initialBlob = new Blob(initialJSON, {type: 'text/plain;charset=utf-8'});
 downloadLink.href = URL.createObjectURL(initialBlob);
 
+const importJSON = document.getElementById("import-json");
+
+importJSON.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.readAsText(file);
+  reader.onload = () => {
+    gridAPI.loadShapesFromJSON(reader.result);
+    gridAPI.updateSave();
+  }
+  reader.onerror = () => {
+    window.alert(reader.error);
+  }
+});
+
 
 
 const viewBox = document.querySelector(".viewbox");
@@ -36,6 +51,11 @@ const snapToGridOptions = document.querySelector(".snap-options-dropdown");
 const undoButton = document.querySelector(".undo-button");
 const redoButton = document.querySelector(".redo-button");
 const resetButton = document.querySelector(".reset-button");
+const uploadButton = document.querySelector(".upload-button");
+
+uploadButton.addEventListener("click", () => {
+  importJSON.click();
+})
 
 
 snapToGridOptions.addEventListener("click", (e) => {

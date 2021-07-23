@@ -91,11 +91,11 @@ canvas {
   background-color: white;
 }
 
-nav.button-bar > button {
+nav.button-bar button {
   font-family: "Lato";
 }
 
-.button-bar > button {
+.button-bar button {
   z-index: 3;
   margin-right: 5px;
 }

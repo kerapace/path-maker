@@ -11,6 +11,7 @@
   </head>
   <body>
     <main>
+      <input type="file" accept="text/plain" id="import-json" hidden>
       <h1>Path-Maker</h1>
       <section class="main-display">
         <div class="viewbox">
@@ -31,14 +32,15 @@
                   <li data-stg="false">None</li>
                 </ul>
             </div>
+            <button class="upload-button">Upload</button>
+            <a class="download-link" href="" download="map.json"><button>Download</button></a>
             <button class="infobox">?</button>
-            <a class="download-link" href="" download="map.json" hidden><button>Download</button></a>
           </nav>
         </div>
         <div class="modal-background">
           <aside>
             This is a simple graph paper app. You can draw multiple kinds of shapes, choose to undo and redo your drawings, and even
-            (in the slightly near future) export and import your drawing as a JSON file. I created this app because I was playing in
+            export and import your drawing as a JSON file. I created this app because I was playing in
             an OD&D campaign where the party was required to map everything and none of the apps I found were nearly spacious enough
             and had the features I wanted. So I made this, and I'm pretty happy with it.
           </aside>
