@@ -9,40 +9,44 @@
     <script src="bundle.js" defer></script>
   </head>
   <body>
-    <section class="main-display">
+    <main>
       <h1>Path-Maker</h1>
-      <div class="viewbox">
-        <canvas id="map-canvas" width="800px" height="600px"></canvas>
-        <nav class="button-bar">
-          <button class="draw-button" data-tool="move">Move</button>
-          <button class="draw-button" data-tool="line">Draw Line</button>
-          <button class="draw-button" data-tool="arc">Draw Arc</button> 
-          <button class="draw-button" data-tool="freehand">Draw Freehand Curve</button>
-          <button class="undo-button">Undo</button>
-          <button class="redo-button">Redo</button>
-          <button class="reset-button">Reset</button>
-          <div class="snap-options-dropdown">
-            <p>Snap to Grid</p>
-              <ul>
-                <li data-stg="20">Full square</li>
-                <li data-stg="10">Half square</li>
-                <li data-stg="false">None</li>
-              </ul>
-          </div>
-          <button class="infobox">?</button>
-          <a class="download-link" href="" download="map.json"><button>Download</button></a>
-        </nav>
-      </div>
-      <div class="modal-background">
-        <aside>
-          This is a simple graph paper app. You can draw multiple kinds of shapes, choose to undo and redo your drawings, and even export and import your
-          drawing as a JSON file. I created this app because I was playing in an OD&D campaign where the party was required to map everything
-          and none of the apps I found were nearly spacious enough and had the features I wanted.
-        </aside>
-      </div>
-    </section>
-    <footer>
-
-    </footer>
+      <section class="main-display">
+        <div class="viewbox">
+          <canvas id="map-canvas" width="800px" height="600px"></canvas>
+          <nav class="button-bar">
+            <button class="draw-button" data-tool="move">Move</button>
+            <button class="draw-button" data-tool="line">Draw Line</button>
+            <button class="draw-button" data-tool="arc">Draw Arc</button> 
+            <button class="draw-button" data-tool="freehand">Draw Freehand Curve</button>
+            <button class="undo-button">Undo</button>
+            <button class="redo-button">Redo</button>
+            <button class="reset-button">Reset</button>
+            <div class="snap-options-dropdown">
+              <p>Snap to Grid</p>
+                <ul>
+                  <li data-stg="20">Full square</li>
+                  <li data-stg="10">Half square</li>
+                  <li data-stg="false">None</li>
+                </ul>
+            </div>
+            <button class="infobox">?</button>
+            <a class="download-link" href="" download="map.json" hidden><button>Download</button></a>
+          </nav>
+        </div>
+        <div class="modal-background">
+          <aside>
+            This is a simple graph paper app. You can draw multiple kinds of shapes, choose to undo and redo your drawings, and even
+            (in the slightly near future) export and import your drawing as a JSON file. I created this app because I was playing in
+            an OD&D campaign where the party was required to map everything and none of the apps I found were nearly spacious enough
+            and had the features I wanted. So I made this, and I'm pretty happy with it.
+          </aside>
+        </div>
+      </section>
+    </main>
+    <header>
+      <a href="https://github.com/kerapace"><img id="github" src="/images/GitHub-Mark-120px-plus.png"/></a>
+      <a href="https://www.linkedin.com/in/jonathan-hill-229408216/"><img id="linkedin" src="/images/LI-In-Bug.png"/></a>
+    </header>
   </body>
 </html>

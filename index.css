@@ -21,6 +21,7 @@ time, mark, audio, video {
 }
 
 body {
+  background-color: #ccc;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -35,12 +36,63 @@ section.main-display {
   position: relative;
 }
 
+main {
+  max-width: 1000px;
+  min-width: 800px;
+  padding: 0 100px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: "Lato";
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 24px;
+  margin-bottom: 0.5em;
+  color: #333;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid #888;
+  border-right: 2px solid #888;
+  border-bottom-right-radius: 5px;
+}
+
+#github {
+  margin: 8px;
+  height: 30px;
+}
+
+header > a:nth-last-child(1) {
+  border-top: 2px solid #888;
+}
+
+#linkedin {
+  margin: 8px 3px 8px 8px;
+  width: 35px;
+  height: 30px;
+}
+
 .button-bar {
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 3;
   display: flex;
+}
+
+canvas {
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+nav.button-bar > button {
+  font-family: "Lato";
 }
 
 .button-bar > button {
@@ -51,13 +103,14 @@ section.main-display {
 ol, ul {
 	list-style: none;
 }
+
 .snap-options-dropdown > p {
   margin: 0;
 }
 
 .snap-options-dropdown {
   position: relative;
-  font: 400 13.3333px Arial;
+  font: 400 13.3333px "Lato";
   padding: 1px 6px;
   border: 1px solid rgb(118,118,118);
   background-color: rgb(239,239,239);
@@ -108,8 +161,11 @@ div.modal-background.visible {
 }
 
 .modal-background > aside {
-  padding: 20px;
-  background-color: grey;
+  border-radius: 10px;
+  padding: 2em;
+  background-color: #ccd;
+  margin: 3em;
+  color: #333;
   font-family: 'Lato';
 }
 
