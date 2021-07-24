@@ -5,8 +5,8 @@ const downloadLink = document.querySelector(".download-link");
 const storage = window.localStorage;
 const storageProxy = new Proxy({}, {
   set: (obj, key, value) => {
+    storage.setItem(key,value);
     if(key === "shapes") {
-      storage.setItem("shapes",value);
       const json = [shapes];
       const blob = new Blob(json, {type: 'text/plain;charset=utf-8'});
       const oldObjectURL = downloadLink.href;
