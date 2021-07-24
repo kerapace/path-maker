@@ -7,7 +7,7 @@ const storageProxy = new Proxy({}, {
   set: (obj, key, value) => {
     storage.setItem(key,value);
     if(key === "shapes") {
-      const json = [shapes];
+      const json = [value];
       const blob = new Blob(json, {type: 'text/plain;charset=utf-8'});
       const oldObjectURL = downloadLink.href;
       downloadLink.href = URL.createObjectURL(blob);
@@ -45,6 +45,7 @@ importJSON.addEventListener("change", (e) => {
   reader.onerror = () => {
     window.alert(reader.error);
   }
+  e.target.value = "";
 });
 
 
