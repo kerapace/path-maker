@@ -3,23 +3,27 @@ const {Line, Arc, Freehand} = require("./shapes.js");
 const canvas = document.getElementById("map-canvas");
 const downloadLink = document.querySelector(".download-link");
 const storage = window.localStorage;
-const storageProxy = new Proxy(storage, {
-  setItem: (target, key, shapes) => {
+const storageProxy = new Proxy({}, {
+  set: (obj, key, value) => {
     if(key === "shapes") {
+      storage.setItem("shapes",value);
       const json = [shapes];
       const blob = new Blob(json, {type: 'text/plain;charset=utf-8'});
       const oldObjectURL = downloadLink.href;
       downloadLink.href = URL.createObjectURL(blob);
       URL.revokeObjectURL(oldObjectURL);
     }
-    return Reflect.setItem(...arguments);
+    return value;
   },
+  get: (obj, prop) => {
+    return storage.getItem(prop);
+  }
 });
 const gridAPI = new GridAPI(canvas,storageProxy);
 const buttons = document.querySelectorAll(".draw-button");
 buttons.forEach(button => button.addEventListener("click",(e) => {gridAPI.tool = e.target.dataset.tool}));
 gridAPI.drawGrid();
-let shapes = storage.getItem("shapes");
+let shapes = storageProxy.shapes;
 if (shapes) {
   gridAPI.loadShapesFromJSON(shapes);
 }

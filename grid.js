@@ -156,7 +156,7 @@ class GridAPI {
   }
 
   updateSave() {
-    this.storage.setItem.bind(window.localStorage,"shapes",this.serializeShapes())();
+    this.storage.shapes = this.serializeShapes();
   }
 
   serializeShapes() {
