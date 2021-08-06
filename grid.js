@@ -1,4 +1,3 @@
-const gsap = require("gsap");
 const {Arc, Line, Freehand} = require("./shapes");
 
 function createCells(width, height) {
@@ -124,6 +123,10 @@ class GridAPI {
   }
 
   undoShape() {
+    if(this.currShape !== null) {
+      this.currShape = null;
+      return;
+    }
     if(this.shapes.length === 0) {return;}
     const shape = this.shapes.pop();
     this.undoneShapes.push(shape);
