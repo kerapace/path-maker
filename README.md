@@ -1,3 +1,64 @@
 # path-maker
 
-Path-Maker is a simple and intuitive graph paper app that lets the user sketch out figures on a movable canvas. It was intended for the purpose of keeping track of dungeon layouts while playing old-school tabletop games like OD&D RAW or dungeon-crawler games like Etrian Odyssey. There are plenty of sites and applications out there that aim to provide an immersive tabletop experience with rolling and rule integration, and most of them are at least a little overbuilt, so I tried to make something with minimal specs that would still be usable. There are three kinds of figures that can be drawn (lines, arcs, and freehand shapes), a toggleable movement option that lets you drag the viewport around, and actions can easily be undone and redone. There is automatic snap-to-grid functionality that can be turned off via a dropdown menu. I am also in the process of allowing people to export map files as JSON and also load them back into the browser.
+Path-Maker is a simple and intuitive graph paper app that lets the user sketch out figures on a movable canvas. It was intended for the purpose of keeping track of dungeon layouts while playing old-school tabletop games like OD&D RAW or dungeon-crawler games like Etrian Odyssey. There are plenty of sites and applications out there that aim to provide an immersive tabletop experience with rolling and rule integration, and most of them are at least a little overbuilt, so I tried to make something with minimal specs that would still be usable.
+
+There are three kinds of figures that can be drawn (lines, arcs, and freehand shapes), which you can switch between using the buttons in the top left, as well a toggleable movement option that lets you drag the viewport around: 
+
+Actions can easily be undone, redone, and reset. This is handled with two stacks on the backend:
+
+
+
+There is automatic snap-to-grid functionality that can be turned off via a dropdown menu.
+
+It is now also possible to save and load maps as JSON. The serialization is accomplished very simply:
+
+```javascript
+  serializeShapes() {
+    return JSON.stringify({shapes: this.shapes.map(shape => Object.assign(shape,{class: shape.constructor.name}))});
+  }
+
+  loadShapesFromJSON(json) {
+    this.shapes = JSON.parse(json).shapes.map(shapeData => {
+      let ShapeType = Object;
+      switch (shapeData.class) {
+        case "Line":
+          ShapeType = Line;
+          break;
+        case "Arc":
+          ShapeType = Arc;
+          break;
+        case "Freehand":
+          ShapeType = Freehand;
+          break;
+        default:
+          throw new Error('Invalid JSON');
+      }
+      delete shapeData.class;
+      return Object.assign(new ShapeType,shapeData);
+    });
+  }
+}
+```
+
+The file transfer functionality is implemented with `URL.createObjectURL` and `URL.revokeObjectURL` on the download side, and a hidden HTML `<input type=file/>` tag on the upload side. I was already saving the map data to localStorage, so I created a Proxy object that would automatically update the object URL when a new map object is saved to localStorage:
+
+```javascript
+  const downloadLink = document.querySelector(".download-link");
+  const storage = window.localStorage;
+  const storageProxy = new Proxy({}, {
+    set: (obj, key, value) => {
+      storage.setItem(key,value);
+      if(key === "shapes") {
+        const json = [value];
+        const blob = new Blob(json, {type: 'text/plain;charset=utf-8'});
+        const oldObjectURL = downloadLink.href;
+        downloadLink.href = URL.createObjectURL(blob);
+        URL.revokeObjectURL(oldObjectURL);
+      }
+      return value;
+    },
+    get: (obj, prop) => {
+      return storage.getItem(prop);
+    }
+  });
+```
