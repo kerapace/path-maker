@@ -24,7 +24,7 @@ class Arc {
     }
     else {
       let angle = (Math.atan2(pos.y-this.y,pos.x-this.x) - startAngle) % (2 * Math.PI) + startAngle;
-      endAngle = Math.abs(angle - startAngle) < 0.05 ? startAngle + 2*Math.PI : angle
+      endAngle = rad * Math.abs(angle - startAngle) < 2 ? startAngle + 2*Math.PI : angle
     }
     ctx.beginPath();
     rad === 0 ? ctx.fillRect(this.x-grid.xOffset,this.y-grid.yOffset,1,1) : ctx.arc(this.x-grid.xOffset,this.y-grid.yOffset,rad,startAngle,endAngle);
