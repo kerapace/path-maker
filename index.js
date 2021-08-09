@@ -128,7 +128,8 @@ canvas.addEventListener("click", (e) => {
         }
         else {
           gridAPI.updatePosition(e);
-          gridAPI.currShape.endAngle = Math.atan2(gridAPI.position.y-gridAPI.currShape.y,gridAPI.position.x-gridAPI.currShape.x);
+          const angle = Math.atan2(gridAPI.position.y-gridAPI.currShape.y,gridAPI.position.x-gridAPI.currShape.x);
+          gridAPI.currShape.endAngle = Math.abs(angle - gridAPI.currShape.startAngle) < 0.05 ? gridAPI.currShape.startAngle + Math.PI * 2 : angle 
           gridAPI.completeShape();
           gridAPI.isSnappedToGrid = true;
         }

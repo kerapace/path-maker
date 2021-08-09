@@ -15,11 +15,17 @@ class Arc {
   draw(ctx,grid,pos) {
     const rad = this.rad === undefined ? Math.sqrt((pos.x-this.x)**2 + (pos.y-this.y)**2) : this.rad;
     const startAngle = this.startAngle === undefined ? Math.atan2(pos.y-this.y,pos.x-this.x) : this.startAngle;
-    const endAngle = this.endAngle !== undefined ? 
-      this.endAngle :
-      this.startAngle === undefined ?
-      startAngle + (2 * Math.PI) :
-      (Math.atan2(pos.y-this.y,pos.x-this.x) - startAngle) % (2 * Math.PI) + startAngle;
+    let endAngle = 0;
+    if(this.endAngle !== undefined) {
+      endAngle = this.endAngle
+    }
+    else if(this.startAngle === undefined) {
+      endAngle = startAngle + 2 * Math.PI;
+    }
+    else {
+      let angle = (Math.atan2(pos.y-this.y,pos.x-this.x) - startAngle) % (2 * Math.PI) + startAngle;
+      endAngle = Math.abs(angle - startAngle) < 0.05 ? startAngle + 2*Math.PI : angle
+    }
     ctx.beginPath();
     rad === 0 ? ctx.fillRect(this.x-grid.xOffset,this.y-grid.yOffset,1,1) : ctx.arc(this.x-grid.xOffset,this.y-grid.yOffset,rad,startAngle,endAngle);
     ctx.stroke();
